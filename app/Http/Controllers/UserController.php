@@ -11,7 +11,8 @@ class UserController extends Controller
     public function login(Request $request){
         $request -> validate([
             'email' => 'required|string',
-            'password' => 'required|min:6'
+            'password' => 'required|min:6',
+            'remember' => 'boolean'
         ]);
 
         $user = User::where('email', $request->email)->first();
@@ -21,8 +22,18 @@ class UserController extends Controller
             return response()->json(['message' => 'User Not Found'], 404);
         }
 
+
+
+
         if(Hash::check($request->password, $user->password)){
             $token = $user->createToken('authToken')->plainTextToken;
+
+            
+        if($request-> remember){
+            $user->remember_token = $token;
+            $user->save();
+        }
+       
             return response()->json(['message' => 'Login Successful', 'user' => $user, 'token' => $token] ,200);
         } else {
             return response()->json(['message' => 'Incorrect Password'] , 401);
@@ -53,7 +64,4 @@ class UserController extends Controller
 
         ], 201);
     }
-
-
-    
 }
