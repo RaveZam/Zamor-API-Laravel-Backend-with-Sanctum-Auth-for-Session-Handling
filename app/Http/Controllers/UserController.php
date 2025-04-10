@@ -23,15 +23,18 @@ class UserController extends Controller
         }
 
 
-
-
         if(Hash::check($request->password, $user->password)){
             $token = $user->createToken('authToken')->plainTextToken;
 
             
         if($request-> remember){
-            $user->remember_token = $token;
+
+            $rememberToken = $user->createToken('authToken')->plainTextToken;
+
+            $user->remember_token = $rememberToken;
             $user->save();
+            
+            return response()->json(['message' => 'Login Successful', 'user' => $user, 'token' => $token, 'remember-token' => $rememberToken ] ,200);
         }
        
             return response()->json(['message' => 'Login Successful', 'user' => $user, 'token' => $token] ,200);

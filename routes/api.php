@@ -17,9 +17,9 @@ Route::middleware('auth:sanctum')->get('/validate-token', function (Request $req
     return response()->json([
         'message' => 'Token is valid',
         'user' => $user,
-        'token' => $user->createToken('authToken')->plainTextToken,  
+        'token' => $user->createToken('authToken')->plainTextToken,                        
     ]);
 });
 
-Route::post('/login', [UserController:: class,'login']);
+Route::post('/login', [UserController:: class,'login']);            
 Route::post('/register', [UserController:: class,'register']);
