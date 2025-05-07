@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Dotenv\Exception\ValidationException;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -29,12 +31,12 @@ class UserController extends Controller
             
         if($request-> remember){
 
-            $rememberToken = $user->createToken('authToken')->plainTextToken;
+            $rememberToken = $user->createToken('rememberMeToken')->plainTextToken;
 
             $user->remember_token = $rememberToken;
             $user->save();
             
-            return response()->json(['message' => 'Login Successful', 'user' => $user, 'token' => $token, 'remember-token' => $rememberToken ] ,200);
+            return response()->json(['message' => 'Login Successful', 'user' => $user, 'token' => $token, 'remember_token' => $rememberToken ] ,200);
         }
        
             return response()->json(['message' => 'Login Successful', 'user' => $user, 'token' => $token] ,200);
@@ -46,25 +48,40 @@ class UserController extends Controller
 
     public function register(Request $request){
 
-        $request-> validate([
-            'name' => 'required|string',
-            'email' => 'required|string',
-            'password' => 'required|min:6|confirmed'
-        ]);
+    
+            $request-> validate([
+                'name' => 'required|string',
+                'email' => 'required|string|email',
+                'password' => 'required|min:6|confirmed',
+                'remember' => 'boolean'
+            ]);
+    
 
-        $user = User::create([
-            'name' =>$request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+            $user = User::create([
+                'name' =>$request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+            ]);
+    
+            $token = $user->createToken('authToken')->plainTextToken;
 
-        $token = $user->createToken('authToken')->plainTextToken;
+            if($request-> remember){
 
-        return response()->json([
-            'message' => 'Registration Successful',
-            'user' => $user,
-            'token' => $token,
-
-        ], 201);
+                $rememberToken = $user->createToken('rememberMeToken')->plainTextToken;
+    
+                $user->remember_token = $rememberToken;
+                $user->save();
+                
+                return response()->json(['message' => 'Register Successful', 'user' => $user, 'token' => $token, 'remember_token' => $rememberToken ] ,200);
+            }
+    
+            return response()->json([
+                'message' => 'Registration Successful',
+                'user' => $user,
+                'token' => $token,
+    
+            ], 201);
+     
+   
     }
 }
