@@ -26,6 +26,7 @@ Route::middleware('auth:sanctum')->get('/validate-token', function (Request $req
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/cart', [CartController::class, 'index']);
     Route::post('/cart', [CartController::class, 'store']);
+    Route::delete('/cart', [CartController::class , 'deleteItem']);
 });
 
 Route::post('/login', [UserController:: class,'login']);            

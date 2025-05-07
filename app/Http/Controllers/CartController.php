@@ -5,8 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\Product;
-
-
+use Illuminate\Support\Facades\Redis;
 
 class CartController extends Controller
 {
@@ -41,4 +40,23 @@ class CartController extends Controller
 
       }
     }
+
+    public function deleteItem(Request $request){
+
+
+        $cartItem = Cart::where('id', $request->id)->where('user_id',auth()->id())->first();
+
+        if($cartItem) {
+            $cartItem->delete();
+            return response()->json(["message" => "Succesfully Deleted Item"]);
+        }
+
+        if(!$cartItem){
+            return response()->json(["message" => "Item Not Found"]);
+
+        }
+    
+    }
+
+    
 }
