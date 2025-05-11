@@ -15,7 +15,7 @@ class CartController extends Controller
         return response()->json($cartItems, 200);
     }
 
-    public function store(Request $request)
+    public function store(Request $request)   
     {
       $request -> validate([
         'product_id' => 'required|exists:products,id',

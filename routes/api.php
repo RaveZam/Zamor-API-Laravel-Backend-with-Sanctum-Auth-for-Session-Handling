@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\AddressController;
 
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -27,6 +28,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/cart', [CartController::class, 'index']);
     Route::post('/cart', [CartController::class, 'store']);
     Route::delete('/cart', [CartController::class , 'deleteItem']);
+
+    Route::post('/address', [AddressController::class, 'saveAddress']);
+    Route::get('/address', [AddressController::class, 'fetchAddresses']);
 });
 
 Route::post('/login', [UserController:: class,'login']);            
