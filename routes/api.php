@@ -7,16 +7,14 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\AddressController;
-
+use App\Http\Controllers\OrderController;
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
 
 Route::middleware('auth:sanctum')->get('/validate-token', function (Request $request) {
-  
     $user = $request->user();  
-
     return response()->json([ 
         'message' => 'Token is valid',
         'user' => $user,
@@ -28,9 +26,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/cart', [CartController::class, 'index']);
     Route::post('/cart', [CartController::class, 'store']);
     Route::delete('/cart', [CartController::class , 'deleteItem']);
-
     Route::post('/address', [AddressController::class, 'saveAddress']);
     Route::get('/address', [AddressController::class, 'fetchAddresses']);
+    Route::post('/order', [OrderController::class , 'createOrder']);
 });
 
 Route::post('/login', [UserController:: class,'login']);            
