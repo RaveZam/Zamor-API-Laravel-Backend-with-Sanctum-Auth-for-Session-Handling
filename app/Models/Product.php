@@ -14,7 +14,8 @@ class Product extends Model
         'productThumbnail',
         'productPrice',
         'brandName',
-        'slug'
+        'slug',
+        'stock'
     ];
 
     public function carts()

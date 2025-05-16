@@ -14,16 +14,18 @@ class CartController extends Controller
         $cartItems = Cart::where('user_id', auth()->id())->with('product')->get();
         return response()->json($cartItems, 200);
     }
-
+ 
     public function store(Request $request)   
     {
       $request -> validate([
         'product_id' => 'required|exists:products,id',
         'quantity' => 'required|integer|min:1',
+        'size' => 'required'
+        
       ]);
 
 
-      $cartItem = Cart::where('user_id', auth()->id())->where('product_id', $request->product_id)->first(); 
+      $cartItem = Cart::where('user_id', auth()->id())->where('product_id', $request->product_id)->where('size',$request->size)->first(); 
 
       if($cartItem){
         $cartItem->quantity += $request->quantity;
@@ -34,6 +36,7 @@ class CartController extends Controller
             'user_id' => auth()->id(),
             'product_id' => $request->product_id,
             'quantity' => $request->quantity,
+            'size' => $request->size
         ]);
         return response()->json($cartItem, 200
     );
@@ -44,7 +47,7 @@ class CartController extends Controller
     public function deleteItem(Request $request){
 
 
-        $cartItem = Cart::where('id', $request->id)->where('user_id',auth()->id())->first();
+        $cartItem = Cart::where('id', operator: $request->id)->where('user_id',auth()->id())->first();
 
         if($cartItem) {
             $cartItem->delete();
@@ -56,6 +59,29 @@ class CartController extends Controller
 
         }
     
+    }
+
+    public function decreaseQuantity(Request $request){
+
+        $cartItem = Cart::where('id', $request->id)
+                ->where('user_id', auth()->id())
+                ->first();
+
+        if($cartItem){
+          $cartItem->quantity -= 1;
+          $cartItem->save();
+        }
+    }
+    public function increaseQuantity(Request $request){
+
+        $cartItem = Cart::where('id', $request->id)
+                ->where('user_id', auth()->id())
+                ->first();
+
+        if($cartItem){
+          $cartItem->quantity += 1;
+          $cartItem->save();
+        }
     }
 
     

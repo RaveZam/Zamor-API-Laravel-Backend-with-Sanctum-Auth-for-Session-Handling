@@ -37,4 +37,14 @@ class AddressController extends Controller
         $userAddresses = Address::where('user_id', auth()->id())->get();
         return response()->json($userAddresses);
     }
+
+    public function deleteAddress(Request $request){
+
+        $address  = Address::where('id', $request->id)->where('user_id', auth()->id())->first();
+
+        if($address){
+            $address->delete();
+        }
+
+    }
 }
