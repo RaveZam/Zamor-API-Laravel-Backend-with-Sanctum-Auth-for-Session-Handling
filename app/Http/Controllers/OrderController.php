@@ -18,9 +18,6 @@ class OrderController extends Controller
         return response()->json(["message" => "Succesfully Fetched", "order" => $order, "order_items" => $orderItems ]);
     } 
 
-
-
-    
     public function createOrder(Request $request){
 
         $order = Order::create([

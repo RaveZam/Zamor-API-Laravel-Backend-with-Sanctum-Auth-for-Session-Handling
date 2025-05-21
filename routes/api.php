@@ -8,7 +8,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\OrderController;
-
+use App\Http\Controllers\FavoriteController;
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
@@ -33,6 +33,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/address', [AddressController::class, 'deleteAddress']);
     Route::post('/order', [OrderController::class , 'createOrder']);
     Route::get('/order', [OrderController::class, 'fetchOrder']);
+    Route::post('/favorite', [FavoriteController::class, 'addToFavorite']);
+    Route::delete('/favorite', [FavoriteController::class, 'removeFromFavorite']);
+    Route::get('/favorite', [FavoriteController::class, 'getFavoriteItems']);
 });
 
 Route::post('/login', [UserController:: class,'login']);            
