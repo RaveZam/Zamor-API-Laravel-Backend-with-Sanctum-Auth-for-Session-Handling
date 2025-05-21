@@ -13,6 +13,12 @@ class FavoriteController extends Controller
             'product_id' => 'required|exists:products,id',
         ]);
 
+        $itemExist = FavoriteItem::where('user_id', auth()->id())->where('product_id', $request->product_id)->first();
+
+        if($itemExist){
+            return response()->json(['message' => 'Product already in favorites'], 400);
+        }
+
         FavoriteItem::create([
             'user_id' => auth()->id(),
             'product_id' => $request->product_id,
@@ -32,7 +38,10 @@ class FavoriteController extends Controller
     }
 
     public function getFavoriteItems(){
-        $favoriteItems = FavoriteItem::where('user_id', auth()->id())->with('product')->get();
+        $favoriteItems = FavoriteItem::where('user_id', auth()->id())
+            ->with('product') 
+            ->get();
+    
         return response()->json($favoriteItems, 200);
     }
 }
