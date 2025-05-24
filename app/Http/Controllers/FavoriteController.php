@@ -32,7 +32,14 @@ class FavoriteController extends Controller
             'product_id' => 'required|exists:products,id',
         ]);
 
-        FavoriteItem::where('user_id', auth()->id())->where('product_id', $request->product_id)->delete();
+         $itemExist = FavoriteItem::where('user_id', auth()->id())->where('product_id', $request->product_id)->first();
+         
+
+        if(!$itemExist){
+            return response()->json(['message' => 'Product not found in favorites'], 400);
+        }
+
+        $itemExist->delete();
 
         return response()->json(['message' => 'Product removed from favorites'], 200);
     }

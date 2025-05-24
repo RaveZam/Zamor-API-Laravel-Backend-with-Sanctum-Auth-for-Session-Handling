@@ -13,11 +13,24 @@ class OrderController extends Controller
 {
 
     public function fetchOrder(Request $request) {
-        $order = Order::where('id' , $request->id)->first();
-        $orderItems = OrderItem::where('order_id', $request->id)->get();
-        return response()->json(["message" => "Succesfully Fetched", "order" => $order, "order_items" => $orderItems ]);
+ 
+        $order = Order::where('user_id', auth()->id())->get();
+        $orderItems = OrderItem::where('order_id', $order->id)->get();
+        return response()->json(["message" => "Succesfully Fetched",  "order_items" => $orderItems, "order" => $order ]);
+        
     } 
 
+    public function fetchAllOrders()
+    {
+        $orders = Order::with('orderItems.product')
+            ->where('user_id', auth()->id())
+            ->get();
+    
+        return response()->json([
+            "message" => "Successfully Fetched",
+            "orders" => $orders
+        ]);
+    }
     public function createOrder(Request $request){
 
         $order = Order::create([

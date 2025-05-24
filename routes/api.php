@@ -32,7 +32,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/address', [AddressController::class, 'fetchAddresses']);
     Route::delete('/address', [AddressController::class, 'deleteAddress']);
     Route::post('/order', [OrderController::class , 'createOrder']);
-    Route::get('/order', [OrderController::class, 'fetchOrder']);
+    Route::get('/order', [OrderController::class, 'fetchAllOrders']);
     Route::post('/favorite', [FavoriteController::class, 'addToFavorite']);
     Route::delete('/favorite', [FavoriteController::class, 'removeFromFavorite']);
     Route::get('/favorite', [FavoriteController::class, 'getFavoriteItems']);
@@ -40,6 +40,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::post('/login', [UserController:: class,'login']);            
 Route::post('/register', [UserController:: class,'register']);
+
 
 Route::post('/product',[ProductController::class, 'addProduct']);
 Route::get('/product',[ProductController::class, 'fetchAllProducts']);
