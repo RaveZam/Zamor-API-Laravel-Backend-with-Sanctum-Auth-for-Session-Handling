@@ -47,4 +47,42 @@ class AddressController extends Controller
         }
 
     }
+
+        public function show($id)
+    {
+        $address = Address::find($id);
+
+        if (!$address) {
+            return response()->json(['message' => 'Address not found'], 404);
+        }
+
+        return response()->json($address, 200);
+    }
+
+    public function update(Request $request, $id)
+{
+    $address = Address::find($id);
+
+    if (!$address) {
+        return response()->json(['message' => 'Address not found'], 404);
+    }
+
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'surname' => 'required|string|max:255',
+        'address' => 'required|string|max:255',
+        'flatNumber' => 'nullable|string|max:255',
+        'province' => 'required|string|max:255',
+        'postcode' => 'required|string|max:20',
+        'phoneNumber' => 'required|string|max:20',
+    ]);
+
+    $address->update($validated);
+
+    return response()->json([
+        'message' => 'Address updated successfully.',
+        'address' => $address,
+    ], 200);
+}
+
 }

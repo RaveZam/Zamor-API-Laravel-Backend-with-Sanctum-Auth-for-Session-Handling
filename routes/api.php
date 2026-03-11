@@ -36,6 +36,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/favorite', [FavoriteController::class, 'addToFavorite']);
     Route::delete('/favorite', [FavoriteController::class, 'removeFromFavorite']);
     Route::get('/favorite', [FavoriteController::class, 'getFavoriteItems']);
+    Route::get('/getSingleAddress/{id}',[AddressController::class, 'show']);
+    Route::put('/address/{id}',[AddressController::class, 'update']);
 });
 
 Route::post('/login', [UserController:: class,'login']);            
