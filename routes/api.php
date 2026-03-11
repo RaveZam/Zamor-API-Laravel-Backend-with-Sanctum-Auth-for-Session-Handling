@@ -46,3 +46,5 @@ Route::post('/register', [UserController:: class,'register']);
 
 Route::post('/product',[ProductController::class, 'addProduct']);
 Route::get('/product',[ProductController::class, 'fetchAllProducts']);
+Route::put('/product/{id}',[ProductController::class, 'updateProduct']);
+Route::delete('/product/{id}',[ProductController::class, 'deleteProduct']);
